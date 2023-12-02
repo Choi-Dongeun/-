@@ -75,7 +75,7 @@ namespace 테트리스_만들기
                 }
             }
         }
-
+        
         private void ClearLine(int y)
         {
             for (; y > 0; y--)

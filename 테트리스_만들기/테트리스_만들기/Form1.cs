@@ -29,7 +29,7 @@ namespace 테트리스_만들기
             by = GameRule.BY;
             bwidth = GameRule.B_WIDTH;
             bheight = GameRule.B_HEIGHT;
-            this.SetClientSizeCore(GameRule.BX * GameRule.B_WIDTH, GameRule.BY * GameRule.B_HEIGHT);
+            this.SetClientSizeCore(GameRule.BX * GameRule.B_WIDTH + 150, GameRule.BY * GameRule.B_HEIGHT);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -50,7 +50,7 @@ namespace 테트리스_만들기
                     {
                         Rectangle now_rt = new Rectangle(xx * bwidth + 2, yy * bheight + 2, bwidth - 4, bheight - 4);
                         graphics.DrawRectangle(Pens.Gray, now_rt);
-                        graphics.FillRectangle(Brushes.Gray, now_rt);
+                        graphics.FillRectangle(Brushes.White, now_rt);
                     }
                 }
             }
@@ -197,7 +197,7 @@ namespace 테트리스_만들기
             {
                 timer1.Enabled = false;
 
-                if (DialogResult.Yes == MessageBox.Show("계속 하실건가요?", "계속 진행 확인 창", MessageBoxButtons.YesNo))
+                if (DialogResult.Yes == MessageBox.Show(" 계속 하실건가요?", "계속 진행 확인 창", MessageBoxButtons.YesNo))
                 {
                     game.ReStart();
                     timer1.Enabled = true;

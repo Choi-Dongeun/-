@@ -1,0 +1,11 @@
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.csproj.AssemblyReference.cache
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.Form1.resources
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.Properties.Resources.resources
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.csproj.GenerateResource.cache
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.csproj.CoreCompileInputs.cache
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\bin\Debug\TETRIS.exe.config
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\bin\Debug\TETRIS.exe
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\bin\Debug\TETRIS.pdb
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.exe
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.pdb
+C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.Form2.resources

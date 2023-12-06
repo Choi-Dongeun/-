@@ -39,8 +39,8 @@ namespace TETRIS
             Random random = new Random();
             X = GameRule.SX; //GameRule에 있는 벽돌 시작좌표
             Y = GameRule.SY;
-            Turn = random.Next() % 4; //
-            BlockNum = random.Next() % 7; //7개 랜덤으로
+            Turn = random.Next() % 4; //4개 중 하나 랜덤값을 Turn에 넣기
+            BlockNum = random.Next() % 7; //7개중 하나 랜덤값을 BlockNum에 넣기
         }
         internal void MoveLeft() //벽돌이 왼쪽으로 이동
         {
@@ -56,7 +56,7 @@ namespace TETRIS
         }
         internal void MoveTurn()
         {
-            Turn = (Turn + 1) % 4; //0번,1번,2번,3번 순으로 회전
+            Turn = (Turn + 1) % 4; //1번,2번,3번,0번 순으로 회전
         }
     }
 }

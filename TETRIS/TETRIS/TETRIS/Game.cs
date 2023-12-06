@@ -33,7 +33,7 @@ namespace TETRIS
             }
         }
 
-        internal static Game Singleton
+        internal static Game Singleton//단일체
         {
             get;
             private set;
@@ -53,7 +53,7 @@ namespace TETRIS
         {
             now = new Diagram();
         }
-        internal bool MoveLeft()
+        internal bool MoveLeft() //왼쪽으로 움직이기
         {
             for (int xx = 0; xx < 4; xx++)
             {
@@ -77,7 +77,7 @@ namespace TETRIS
             return false;
         }
 
-        internal bool MoveRight()
+        internal bool MoveRight() //오른쪽으로 움직이기
         {
             for (int xx = 0; xx < 4; xx++)
             {
@@ -100,7 +100,7 @@ namespace TETRIS
             return false;
         }
 
-        internal bool MoveDown()
+        internal bool MoveDown() //아래쪽으로 움직이기
         {
             for (int xx = 0; xx < 4; xx++)
             {
@@ -125,7 +125,7 @@ namespace TETRIS
             return false;
         }
 
-        internal bool MoveTurn()
+        internal bool MoveTurn() //회전하기
         {
             for (int xx = 0; xx < 4; xx++)
             {
@@ -148,15 +148,15 @@ namespace TETRIS
             return false;
         }
 
-        internal bool Next()
+        internal bool Next()//게임이 끝나는 조건
         {
             now.Reset();
-            return gboard.MoveEnable(now.BlockNum, Turn, now.X, now.Y);
+            return gboard.MoveEnable(now.BlockNum, Turn, now.X, now.Y); //블럭이 밑으로 움직이지 못할때
         }
 
         internal void ReStart()
         {
-            gboard.ClearBoard();
+            gboard.ClearBoard();//보드 지우기
         }
     }
 }

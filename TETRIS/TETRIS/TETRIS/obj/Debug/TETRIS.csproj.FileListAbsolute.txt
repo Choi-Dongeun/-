@@ -9,3 +9,14 @@ C:\Users\wjsrl\source\repos\TETRIS\TETRIS\bin\Debug\TETRIS.pdb
 C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.exe
 C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.pdb
 C:\Users\wjsrl\source\repos\TETRIS\TETRIS\obj\Debug\TETRIS.Form2.resources
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\bin\Debug\TETRIS.exe.config
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\bin\Debug\TETRIS.exe
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\bin\Debug\TETRIS.pdb
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.csproj.AssemblyReference.cache
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.Form1.resources
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.Form2.resources
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.Properties.Resources.resources
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.csproj.GenerateResource.cache
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.csproj.CoreCompileInputs.cache
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.exe
+C:\Users\82106\Desktop\윈도우 프로그래밍\TETRIS\TETRIS\TETRIS\obj\Debug\TETRIS.pdb

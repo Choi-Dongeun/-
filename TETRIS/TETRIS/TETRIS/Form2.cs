@@ -25,7 +25,7 @@ namespace TETRIS
         }
 
 
-        private void DrawBoard(Graphics graphics)
+        private void DrawBoard(Graphics graphics) //보드의 크기를 결정함
         {
             for (int xx = 0; xx < bx; xx++)
             {
@@ -41,7 +41,7 @@ namespace TETRIS
             }
         }
 
-        private void DrawDiagram(Graphics graphics)
+        private void DrawDiagram(Graphics graphics)//블록을 그림
         {
             Pen dpen = new Pen(Color.Black, 4);
             Point now = game.NowPosition;
@@ -89,13 +89,13 @@ namespace TETRIS
             }
         }
 
-        private void DrawGraduation(Graphics graphics)
+        private void DrawGraduation(Graphics graphics) //모눈종이 만들기
         {
             DrawHorizons(graphics);
             DrawVerticals(graphics);
         }
 
-        private void DrawVerticals(Graphics graphics)
+        private void DrawVerticals(Graphics graphics)//모눈종이의 수직선
         {
             Point st = new Point();
             Point et = new Point();
@@ -111,7 +111,7 @@ namespace TETRIS
             }
         }
 
-        private void DrawHorizons(Graphics graphics)
+        private void DrawHorizons(Graphics graphics)//모눈종이의 수평선
         {
             Point st = new Point();
             Point et = new Point();
@@ -159,15 +159,15 @@ namespace TETRIS
             }
         }
 
-        private void EndingCheck()
+        private void EndingCheck()//엔딩조건 체크
         {
-            if (game.Next())
+            if (game.Next())//진행가능한가?
             {
                 Invalidate();
             }
-            else
+            else //아니라면
             {
-                timer1.Enabled = false;
+                timer1.Enabled = false;//타이머를 멈춤
 
                 if (DialogResult.Yes == MessageBox.Show(" 계속 하실건가요?", "계속 진행 확인 창", MessageBoxButtons.YesNo))
                 {
@@ -191,7 +191,7 @@ namespace TETRIS
             }
         }
 
-        private Region MakeRegion(int cx, int cy)
+        private Region MakeRegion(int cx, int cy) //방향키에 대한 리전(움직이고 그 전 블록 삭제)
         {
             Point now = game.NowPosition;
 
@@ -215,9 +215,10 @@ namespace TETRIS
             }
             return region;
         }
-        private Region MakeRegion()
+        private Region MakeRegion() //turn에 대한 리전 (회전하고 그 전 모야 블럭 삭제)
         {
             Point now = game.NowPosition;
+
             int bn = game.BlockNum;
             int tn = game.Turn;
             int oldtn = (tn + 3) % 4;

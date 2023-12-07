@@ -98,3 +98,49 @@ namespace Tetris
             playerBoardEndPoint = new Point(playerBoardStartPoint.X + Game.BX, EDGE_SIZE_X + Game.BY);
 
         }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            DrawGame(e.Graphics);
+            DrawOption(e.Graphics);
+            if (!isPlay) DrawStartScene(e.Graphics);
+            DoubleBuffered = true;
+        }
+        private void DrawStartScene(Graphics g)
+        {
+            Font font = new Font("Gill Sans MT", 23, FontStyle.Bold);
+            SolidBrush brush = new SolidBrush(Color.FromArgb(200, 200, 200));
+            Rectangle rect = new Rectangle(boardStartPoint.X * Game.CELL_SIZE, boardStartPoint.Y * Game.CELL_SIZE    //씬 배경
+                , (boardEndPoint.X - boardStartPoint.X) * Game.CELL_SIZE, (boardEndPoint.Y - boardStartPoint.Y) * Game.CELL_SIZE);
+            g.FillRectangle(brush, rect);
+
+
+            //START배경
+            rect = new Rectangle(rect.X + rect.Width / 4, rect.Y + rect.Height / 3, rect.Width / 2, rect.Height / 10);
+            brush = new SolidBrush(Color.FromArgb(20, 20, 20));
+            g.FillRectangle(brush, rect);
+            startButtonRect = rect;
+
+            //START 글자
+            brush = new SolidBrush(Color.FromArgb(250, 250, 250));
+            g.DrawString("START", font, brush, rect.X, rect.Y + 5);
+
+            //QUIT배경
+            rect.Y += EDGE_SIZE_Y * 3 * Game.CELL_SIZE;
+            brush = new SolidBrush(Color.FromArgb(20, 20, 20));
+            g.FillRectangle(brush, rect);
+            quitButtonRect = rect;
+
+            //QUIT 글자
+            brush = new SolidBrush(Color.FromArgb(250, 250, 250));
+            g.DrawString("  QUIT", font, brush, rect.X, rect.Y + 5);
+
+            if (lastScore != 0)
+            {
+                rect.Y -= EDGE_SIZE_Y * 5 * Game.CELL_SIZE;
+                brush = new SolidBrush(Color.FromArgb(20, 20, 20));
+                g.DrawString(Convert.ToString(lastScore) + "점", font, brush, rect.X, rect.Y);
+                if (isWin) g.DrawString("W I N", font, brush, rect.X, rect.Y - 50);
+                else g.DrawString("L O S E", font, brush, rect.X, rect.Y - 50);
+            }
+        }

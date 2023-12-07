@@ -353,4 +353,63 @@ namespace Tetris
             scoreLabel.Text = Convert.ToString(myGame.gameScore);
         }
         #endregion
+        #region Event
+        private void NetworkTetris_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (networkStatus != NetworkStatus.notConnected)
+            {
+                receiveThread.Abort();
+                socket.Close();
+            }
+        }
 
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (isPlay)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Down: myGame.MoveDown(); break;
+                    case Keys.Right: myGame.MoveRight(); break;
+                    case Keys.Left: myGame.MoveLeft(); break;
+                    case Keys.Space: myGame.MoveDrop(); break;
+                    case Keys.ShiftKey:
+                        if (!putShift) myGame.UseHold();
+                        putShift = true;
+                        break;
+                    case Keys.Up:
+                        if (!putUp) myGame.MoveTurn();
+                        putUp = true;
+                        break;
+
+                    case Keys.D1:
+                    case Keys.NumPad1:
+                        if (networkStatus != NetworkStatus.notConnected)
+                        {
+                            SendToNetwork("LOL");
+                            statusTextBox.AppendText("나: 쉽네요ㅋㅋ\r\n");
+                        }
+                        break;
+
+
+                }
+                CheckGameOver();
+                Invalidate();
+            }
+        }
+
+        private void downTimer_Tick(object sender, EventArgs e)
+        {
+            if (isPlay)
+            {
+                myGame.gameScore++;
+                if (!myGame.MoveDown()) CheckGameOver();
+                if (downTickInterval > 200) downTimer.Interval = downTickInterval--;
+                if (networkStatus != NetworkStatus.notConnected)
+                {
+                    SendToNetwork(myGame.gameBoard);
+                    AttackCheck();
+                }
+                Invalidate();
+            }
+        }

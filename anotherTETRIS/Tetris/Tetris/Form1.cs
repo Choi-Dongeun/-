@@ -413,3 +413,46 @@ namespace Tetris
                 Invalidate();
             }
         }
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if ((startButtonRect.X < e.Location.X &&
+                e.Location.X < startButtonRect.X + startButtonRect.Width) &&
+                (startButtonRect.Y <= e.Location.Y &&
+                e.Location.Y <= startButtonRect.Y + startButtonRect.Height))
+            {
+                OffController();
+                if (networkStatus != NetworkStatus.notConnected) SendToNetwork("Start");
+                isPlay = true;
+            }
+
+            else if ((quitButtonRect.X <= e.Location.X &&
+                e.Location.X <= quitButtonRect.X + quitButtonRect.Width) &&
+                (quitButtonRect.Y <= e.Location.Y &&
+                e.Location.Y <= quitButtonRect.Y + quitButtonRect.Height))
+            {
+                Close();
+            }
+        }
+
+        private void oclock_Tick(object sender, EventArgs e)
+        {
+            if (isPlay) playTime++;
+            else playTime = 0;
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (isPlay)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.ShiftKey:
+                        putShift = false;
+                        break;
+                    case Keys.Up:
+                        putUp = false;
+                        break;
+                }
+            }
+        }
+        #endregion

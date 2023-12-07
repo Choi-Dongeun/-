@@ -12,6 +12,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using Tetris;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Tetris
 {
@@ -456,3 +457,162 @@ namespace Tetris
             }
         }
         #endregion
+        #region NetWork
+
+        private void onServerButton_Click(object sender, EventArgs e)
+        {
+            OnServer();
+            Invalidate();
+        }
+
+        private void clientButton_Click(object sender, EventArgs e)
+        {
+            ConnectToServer();
+            Invalidate();
+        }
+
+        private void OffController()
+        {
+            ipTextBox.Enabled = false;
+            onServerButton.Enabled = false;
+            clientButton.Enabled = false;
+
+        }
+
+
+        private void OnServer()
+        {
+            ipAdress = Dns.Resolve(Dns.GetHostName()).AddressList[0];
+
+            IPEndPoint endPoint = new IPEndPoint(ipAdress, port);
+            ipTextBox.SelectedText = ipAdress.ToString();
+            statusTextBox.AppendText("서버를 열었습니다. \r\n");
+
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socket.Bind(endPoint);
+            socket.Listen(10);
+            socket = socket.Accept();
+
+            OffController();
+            networkStatus = NetworkStatus.Server;
+            receiveThread = new Thread(new ThreadStart(ReceiveFromNetwork));
+            receiveThread.Start();
+            statusTextBox.AppendText("클라이언트와 연결.\r\n");
+            ipTextBox.Text = "";
+        }
+
+        private void ConnectToServer()
+        {
+            ipAdress = IPAddress.Parse(ipTextBox.Text);
+            IPEndPoint endPoint = new IPEndPoint(ipAdress, port);
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            try
+            {
+                socket.Connect(endPoint);
+            }
+            catch (Exception e)
+            {
+                statusTextBox.AppendText("연결 실패.\r\n");
+                return;
+            }
+
+            OffController();
+            networkStatus = NetworkStatus.Client;
+            receiveThread = new Thread(new ThreadStart(ReceiveFromNetwork));
+            receiveThread.Start();
+            statusTextBox.AppendText("서버에 연결됐습니다. \r\n");
+            ipTextBox.Text = "";
+        }
+
+        private void ReceiveFromNetwork()
+        {
+            while (networkStatus != NetworkStatus.notConnected)
+            {
+                int dataLength = socket.Receive(receiveData);
+                encodingData = Encoding.UTF8.GetString(receiveData, 0, dataLength);
+
+                if (encodingData.Equals("Start"))
+                {
+                    isPlay = true;
+                }
+                else if (encodingData.Equals("GameOver"))
+                {
+                    lastScore = myGame.gameScore;
+                    isWin = true;
+                    Reset();
+                    Invalidate();
+                }
+                else if (encodingData.Equals("Attack"))
+                {
+                    myGame.Attacked();
+                }
+                else if (encodingData.Equals("LOL"))
+                {
+                    statusTextBox.AppendText("상대: 쉽네요 ㅋㅋ\r\n");
+                }
+                else
+                {
+                    int idx = 0;
+                    for (int yy = 0; yy < Game.BY; yy++)
+                    {
+                        for (int xx = 0; xx < Game.BX; xx++)
+                        {
+                            if (encodingData[idx] == '0') playerBoard[yy, xx] = false;
+                            else if (encodingData[idx] == '1') playerBoard[yy, xx] = true;
+                            idx++;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        private void SendToNetwork(bool[,] gameBoard)
+        {
+            string data = "";
+            for (int y = 0; y < Game.BY; y++)
+            {
+                for (int x = 0; x < Game.BX; x++)
+                {
+                    if (gameBoard[y, x]) data += 1;
+                    else data += 0;
+                }
+            }
+
+            SendToNetwork(data);
+        }
+
+        private void SendToNetwork(String data)
+        {
+            byte[] sendData = Encoding.UTF8.GetBytes(data);
+
+            socket.Send(sendData);
+        }
+
+        private void AttackCheck()
+        {
+            if (myGame.gameScore > attackPoint)
+            {
+                SendToNetwork("Attack");
+                attackPoint += 150;
+            }
+        }
+
+
+        #endregion
+
+        public void CheckGameOver()
+        {
+            if (myGame.CheckGameOver())
+            {
+                if (networkStatus != NetworkStatus.notConnected)
+                {
+                    SendToNetwork("GameOver");
+                    isWin = false;
+                }
+                lastScore = myGame.gameScore;
+                Reset();
+            }
+        }
+    }
+}

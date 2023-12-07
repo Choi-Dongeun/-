@@ -144,3 +144,121 @@ namespace Tetris
                 else g.DrawString("L O S E", font, brush, rect.X, rect.Y - 50);
             }
         }
+        #region DrawGame()
+        private void DrawGame(Graphics g)
+        {
+            DrawBackground(g, boardStartPoint, boardEndPoint);
+            DrawBlock(g, boardStartPoint);
+            DrawLine(g, boardStartPoint, boardEndPoint);
+
+            if (networkStatus != NetworkStatus.notConnected)
+            {
+                DrawBackground(g, playerBoardStartPoint, playerBoardEndPoint);
+                DrawPlayerBoard(g, playerBoardStartPoint);
+                DrawLine(g, playerBoardStartPoint, playerBoardEndPoint);
+            }
+        }
+        private void DrawPlayerBoard(Graphics g, Point startPoint)
+        {
+            Rectangle rect;
+            for (int yy = 0; yy < Game.BY; yy++)
+            {
+                for (int xx = 0; xx < Game.BX; xx++)
+                {
+                    if (playerBoard[yy, xx])
+                    {
+                        rect = new Rectangle((xx + startPoint.X) * Game.CELL_SIZE, (yy + startPoint.Y) * Game.CELL_SIZE, Game.CELL_SIZE, Game.CELL_SIZE);
+                        g.FillRectangle(blockBrushes[7], rect);
+                    }
+                }
+            }
+        }
+        private void DrawBackground(Graphics g, Point startPoint, Point endPoint)
+        {
+            startPoint.X *= Game.CELL_SIZE;
+            startPoint.Y *= Game.CELL_SIZE;
+            endPoint.X = endPoint.X * Game.CELL_SIZE - startPoint.X;
+            endPoint.Y = endPoint.Y * Game.CELL_SIZE - startPoint.Y;
+            g.FillRectangle(backgroundBrush, new Rectangle(startPoint.X, startPoint.Y
+                , endPoint.X, endPoint.Y));
+        }
+        private void DrawBlock(Graphics g, Point startPoint)
+        {
+            DrawStackedBlock(g, startPoint);
+            for (int yy = 0; yy < 4; yy++)
+            {
+                for (int xx = 0; xx < 4; xx++)
+                {
+                    DrawNowBlock(g, startPoint, yy, xx);
+                    DrawDropPreView(g, startPoint, yy, xx);
+                }
+            }
+
+        }
+        private void DrawLine(Graphics g, Point startPoint, Point endPoint)
+        {
+            Point drawStartPoint = new Point();
+            Point drawEndPoint = new Point();
+            Pen linePen = new Pen(Color.FromArgb(255, 50, 50, 50), 1);
+            for (int xx = 0; xx <= endPoint.X - startPoint.X; xx++) //세로줄
+            {
+                drawStartPoint.X = (startPoint.X + xx) * Game.CELL_SIZE;
+                drawStartPoint.Y = startPoint.Y * Game.CELL_SIZE;
+                drawEndPoint.X = drawStartPoint.X;
+                drawEndPoint.Y = endPoint.Y * Game.CELL_SIZE;
+                g.DrawLine(linePen, drawStartPoint, drawEndPoint);
+            }
+
+            for (int yy = 0; yy <= endPoint.Y - startPoint.Y; yy++) //가로줄
+            {
+                drawStartPoint.X = startPoint.X * Game.CELL_SIZE;
+                drawStartPoint.Y = (startPoint.Y + yy) * Game.CELL_SIZE;
+                drawEndPoint.X = endPoint.X * Game.CELL_SIZE;
+                drawEndPoint.Y = drawStartPoint.Y;
+                g.DrawLine(linePen, drawStartPoint, drawEndPoint);
+            }
+
+        }
+        private void DrawStackedBlock(Graphics g, Point startPoint) // 쌓여있는 블록
+        {
+            Rectangle rect;
+            for (int yy = 0; yy < Game.BY; yy++)
+            {
+                for (int xx = 0; xx < Game.BX; xx++)
+                {
+                    if (myGame.gameBoard[yy, xx])
+                    {
+                        rect = new Rectangle((xx + startPoint.X) * Game.CELL_SIZE, (yy + startPoint.Y) * Game.CELL_SIZE, Game.CELL_SIZE, Game.CELL_SIZE);
+                        g.FillRectangle(blockBrushes[myGame.gameColorBoard[yy, xx]], rect);
+                    }
+                }
+            }
+        }
+        private void DrawNowBlock(Graphics g, Point startPoint, int yy, int xx)
+        {
+            Rectangle rect;
+            if (myGame.BlockCheck(yy, xx, -1))
+            {
+                rect = myGame.GetRect(yy + startPoint.Y, xx + startPoint.X);
+                g.FillRectangle(blockBrushes[myGame.now.shape], rect);
+            }
+        }
+        private void DrawDropPreView(Graphics g, Point startPoint, int yy, int xx) //Drop 미리보기
+        {
+
+            Rectangle rect;
+            if (myGame.BlockCheck(yy, xx, -1))
+            {
+                int dis = myGame.GetFloorDistance();
+                if (dis != 0)
+                {
+                    Color color = blockBrushes[myGame.now.shape].Color;
+                    Pen gPen = new Pen(color, 2);
+                    rect = myGame.GetRect(yy + dis + startPoint.Y, xx + startPoint.X);
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(30, color.R, color.G, color.B)), rect);
+                    g.DrawRectangle(gPen, rect);
+                }
+            }
+        }
+        #endregion
+

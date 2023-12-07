@@ -261,4 +261,96 @@ namespace Tetris
             }
         }
         #endregion
+        #region DrawOption()
+        private void DrawOption(Graphics g)
+        {
+            DrawHoldArea(g);
+            DrawNextArea(g);
+            DrawString(g);
+        }
+        private void DrawHoldArea(Graphics g)
+        {
+            Point startPoint = new Point(EDGE_SIZE_X, EDGE_SIZE_Y);
+            Point endPoint = new Point(EDGE_SIZE_X + Game.OPTION_SIZE_X, EDGE_SIZE_Y + 6);
+            DrawBackground(g, startPoint, endPoint);
+
+            if (myGame.holdBlockNum != -1)
+            {
+                Rectangle rect;
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    for (int xx = 0; xx < 4; xx++)
+                    {
+                        if (myGame.BlockCheck(yy, xx, 3))
+                        {
+                            rect = new Rectangle((xx + startPoint.X) * Game.CELL_SIZE
+                                , (startPoint.Y + yy + 1) * Game.CELL_SIZE
+                                , Game.CELL_SIZE, Game.CELL_SIZE);
+                            g.FillRectangle(blockBrushes[myGame.holdBlockNum], rect);
+                        }
+                    }
+                }
+            }
+
+            DrawLine(g, startPoint, endPoint);
+
+        }
+        private void DrawNextArea(Graphics g)
+        {
+            Point startPoint = new Point(EDGE_SIZE_X * 3 + Game.BX + Game.OPTION_SIZE_X, EDGE_SIZE_Y);
+            Point endPoint = new Point(startPoint.X + Game.OPTION_SIZE_X, 18);
+            DrawBackground(g, startPoint, endPoint);
+            if (isPlay)
+            {
+                Rectangle rect;
+                for (int nxt = 0; nxt < myGame.nextBlocks.Length; nxt++)
+                {
+                    for (int yy = 0; yy < 4; yy++)
+                    {
+                        for (int xx = 0; xx < 4; xx++)
+                        {
+                            if (myGame.BlockCheck(yy, xx, nxt))
+                            {
+                                rect = new Rectangle((xx + startPoint.X) * Game.CELL_SIZE
+                                    , (startPoint.Y + yy + 1 + nxt * 5) * Game.CELL_SIZE
+                                    , Game.CELL_SIZE, Game.CELL_SIZE);
+                                g.FillRectangle(blockBrushes[myGame.nextBlocks[nxt].shape], rect);
+                            }
+                        }
+                    }
+                }
+            }
+            DrawLine(g, startPoint, endPoint);
+        }
+        private void DrawString(Graphics g)
+        {
+            int nextX = (EDGE_SIZE_X * 3 + Game.BX + Game.OPTION_SIZE_X) * Game.CELL_SIZE;
+            int nextY = EDGE_SIZE_Y * Game.CELL_SIZE;
+            Font font = new Font("Gill Sans MT", 23, FontStyle.Bold);
+            SolidBrush brush = new SolidBrush(Color.FromArgb(255, 254, 255, 255));
+            g.DrawString("HOLD", font, brush, EDGE_SIZE_X * Game.CELL_SIZE, EDGE_SIZE_Y * Game.CELL_SIZE - Game.CELL_SIZE);
+            g.DrawString("SCORE", font, brush, EDGE_SIZE_X * Game.CELL_SIZE - 10, (EDGE_SIZE_Y * 4) * Game.CELL_SIZE);
+
+            //플레이시간
+            g.DrawString("TIME", font, brush, EDGE_SIZE_X * Game.CELL_SIZE, (Game.BY - 2) * Game.CELL_SIZE);
+            string secondStr = playTime % 60 < 10 ? "0" + playTime % 60 : "" + playTime % 60;
+            string minuteStr = playTime / 60 < 10 ? "0" + playTime / 60 : "" + playTime / 60;
+            g.DrawString(minuteStr + ":" + secondStr,
+                font, brush, EDGE_SIZE_X * Game.CELL_SIZE, (Game.BY) * Game.CELL_SIZE);
+
+            g.DrawString("NEXT", font, brush, nextX, nextY - Game.CELL_SIZE);
+            g.DrawString("HELP", font, brush, nextX, nextY * 9);
+            font = new Font("Gill Sans MT", 11, FontStyle.Bold);
+            g.DrawString("MOVE　　↑", font, brush, nextX - 10, nextY * 10);
+            g.DrawString("　　　← ↓ →", font, brush, nextX, nextY * 10.5f);
+            g.DrawString("DROP :  Space Bar", font, brush, nextX - 10, nextY * 11);
+            g.DrawString("HOLD :  SHIFT", font, brush, nextX - 10, nextY * 11.5f);
+            //font = new Font("Gill Sans MT", 11);
+            g.DrawString("   (-100 SCORE)", font, brush, nextX - 10, nextY * 12f);
+            g.DrawString("CHAT : num 1", font, brush, nextX - 10, nextY * 12.5f);
+
+            scoreLabel.Location = new Point(EDGE_SIZE_X * Game.CELL_SIZE - 10, (EDGE_SIZE_Y * 5) * Game.CELL_SIZE);
+            scoreLabel.Text = Convert.ToString(myGame.gameScore);
+        }
+        #endregion
 
